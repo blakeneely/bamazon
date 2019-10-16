@@ -22,7 +22,7 @@ function showAllStock(){
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
-            console.log("Item ID: " + res[i].item_id + "|| " + "Product: " + res[i].product_name + " || " + "Price: " + res[i].price + " || " + "Quantity: " + res[i].stock_quantity + " || " + "Department Name: " + res[i].department_name + "\n");
+            console.log("Item ID: " + res[i].item_id + " || " + "Product: " + res[i].product_name + " || " + "Price: " + res[i].price + " || " + "Quantity: " + res[i].stock_quantity + " || " + "Department Name: " + res[i].department_name + "\n");
         }
         // Run Inquirer Prompt method passing the res as an argument
         getResponse(res);
@@ -47,8 +47,8 @@ function getResponse(res) {
         for(var i = 0; i < res.length; i++){
             if(res[i].item_id == answer.product){
                 flag = true;
-                let product = res[i].product_name;                  // Store response product name for ease of typing later
-                let price = res[i].price;
+                let product = res[i].product_name;                  // Store result product name for ease of typing later
+                let price = res[i].price;                           // Store result price for typing later
                 let id = i;                                         // Store i count to use later
                 inquirer.prompt([
                     {
@@ -75,7 +75,7 @@ function getResponse(res) {
                         })
                     }else {
                         console.log("-----------------------------------------------------------------------");
-                        console.log("Not a valid selection. Please choose again.");
+                        console.log("********* Not enough in invetory, please choose again. *********");
                         console.log("-----------------------------------------------------------------------");
                         getResponse(res);
                     }
@@ -84,7 +84,7 @@ function getResponse(res) {
         }
         // Validate user response and run Inquirer again if not
         if(i == res.length && flag === "false") {
-            console.log("Not a valid selection. Please choose again.")
+            console.log("********* Not a valid selection, please choose again. *********")
             console.log("-----------------------------------------------------------------------");
             getResponse(res);
         }
