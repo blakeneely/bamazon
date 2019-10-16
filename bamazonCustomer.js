@@ -65,11 +65,15 @@ function getResponse(res) {
                     }
                 ]).then(function(answer){
                     if((res[id].stock_quantity - answer.quantity) > 0) {    // Check if stock_quantity is available
+                        // Store total purchase price to variable
+                        let totalPrice = price * answer.quantity;
+                        // Cut off total price to 2 decimals
+                        totalPrice = totalPrice.toFixed(2);
                         // Update database with new stock_quantity and display updated table in console
                         connection.query("UPDATE products SET stock_quantity='"+(res[id].stock_quantity - answer.quantity) + "' WHERE product_name= '" + product + "'", function(err, res2) {
                             if (err) throw err;
                             console.log("-----------------------------------------------------------------------");
-                            console.log("********* Purchase of " + answer.quantity + " " + product + " for $" + (price * answer.quantity) + " made! *********");
+                            console.log("********* Purchase of " + answer.quantity + " " + product + " for $" + totalPrice + " made! *********");
                             console.log("-----------------------------------------------------------------------");
                             showAllStock();
                         })
@@ -83,7 +87,7 @@ function getResponse(res) {
             }
         }
         // Validate user response and run Inquirer again if not
-        if(i == res.length && flag === "false") {
+        if(i == res.length && flag === false) {
             console.log("********* Not a valid selection, please choose again. *********")
             console.log("-----------------------------------------------------------------------");
             getResponse(res);
