@@ -48,6 +48,7 @@ function getResponse(res) {
             if(res[i].item_id == answer.product){
                 flag = true;
                 let product = res[i].product_name;                  // Store response product name for ease of typing later
+                let price = res[i].price;
                 let id = i;                                         // Store i count to use later
                 inquirer.prompt([
                     {
@@ -68,7 +69,7 @@ function getResponse(res) {
                         connection.query("UPDATE products SET stock_quantity='"+(res[id].stock_quantity - answer.quantity) + "' WHERE product_name= '" + product + "'", function(err, res2) {
                             if (err) throw err;
                             console.log("-----------------------------------------------------------------------");
-                            console.log("Purchase made!");
+                            console.log("********* Purchase of " + answer.quantity + " " + product + " for $" + (price * answer.quantity) + " made! *********");
                             console.log("-----------------------------------------------------------------------");
                             showAllStock();
                         })
